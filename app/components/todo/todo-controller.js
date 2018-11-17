@@ -13,14 +13,25 @@ function getTodos() {
 function draw(todos) {
 	//WHAT IS MY PURPOSE?
 	//BUILD YOUR TODO TEMPLATE HERE
+	console.log(todos)
 	var template = ''
-	//DONT FORGET TO LOOP
+	todos.forEach((todo, index) => {
+		template += `
+		<div class="col-3 card">
+		<input type="checkbox" ${todo.completed ? "checked": ''} id="${todo._id}" onclick=""/>
+		<p>${todo.description}</p>
+		</div>
+
+		`
+	})
+document.getElementById("todo").innerHTML = template
 }
 
 
 export default class TodoController {
 	constructor() {
 		// IF YOU WANT YOUR TODO LIST TO DRAW WHEN THE PAGE FIRST LOADS WHAT SHOULD YOU CALL HERE???
+	todoService.getTodos(draw)	
 	}
 	// You will need four methods
 	// getTodos should request your api/todos and give an array of todos to your callback fn
@@ -36,6 +47,7 @@ export default class TodoController {
 		var form = e.target
 		var todo = {
 			// DONT FORGET TO BUILD YOUR TODO OBJECT
+			description: form.newTask.value
 		}
 
 		//PASSES THE NEW TODO TO YOUR SERVICE
@@ -47,7 +59,12 @@ export default class TodoController {
 
 	toggleTodoStatus(todoId) {
 		// asks the service to edit the todo status
-		todoService.toggleTodoStatus(todoId, getTodos)
+		let editedTodo = {
+			completed: document.getElementById(todoId).checked,
+			_id: todoId
+		}
+
+		todoService.toggleTodoStatus(editedTodo, getTodos)
 		// YEP THATS IT FOR ME
 	}
 
