@@ -20,7 +20,7 @@ export default class WeatherController {
 
 		temp = (temp - 273.15) * 9/5 +32
 
-			document.getElementById("weather").innerText = Math.floor(temp)
+			document.getElementById("weather").innerText = Math.floor(temp) + '°'
 		})
 	}
 }

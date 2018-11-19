@@ -2,7 +2,7 @@ import TodoService from "./todo-service.js";
 
 
 
-var todoService = new TodoService
+var todoService = new TodoService()
 
 // Use this getTodos function as your callback for all other edits
 function getTodos() {
@@ -10,21 +10,28 @@ function getTodos() {
 	todoService.getTodos(draw)
 }
 
+let todocount=0
+
 function draw(todos) {
 	//WHAT IS MY PURPOSE?
 	//BUILD YOUR TODO TEMPLATE HERE
 	console.log(todos)
+	
 	var template = ''
-	todos.forEach((todo, index) => {
+	todos.forEach(todo => {
 		template += `
-		<div class="col-3 card">
-		<input type="checkbox" ${todo.completed ? "checked": ''} id="${todo._id}" onclick=""/>
-		<p>${todo.description}</p>
+		<div class="col-4 card ">
+		<h5 class="{$todo.completed ? "strike-out" : ''}">
+		<input type="checkbox" ${todo.completed} ? "checked": ''} id="${todo._id}" onclick="app.controllers.todoController.toggleTodoStatus('${todo._id}')">
+		${todo.description}</h5>
+		<button onclick="app.controllers.todoController.removeTodo('${todo._id}')" type="delete">Delete</button> 
 		</div>
 
 		`
+		todocount++
 	})
 document.getElementById("todo").innerHTML = template
+document.getElementById("todocount").innerText = JSON.stringify(todocount)
 }
 
 
@@ -46,7 +53,6 @@ export default class TodoController {
 		// TAKE THE INFORMATION FORM THE FORM
 		var form = e.target
 		var todo = {
-			// DONT FORGET TO BUILD YOUR TODO OBJECT
 			description: form.newTask.value
 		}
 
@@ -69,11 +75,14 @@ export default class TodoController {
 	}
 
 	removeTodo(todoId) {
+		// todoId.preventDefault()
 		// ask the service to run the remove todo with this id
+		todoService.removeTodo(todoId, getTodos)
+
+		// todoAPI.delete(todoId)
+		}
 
 		// ^^^^ THIS LINE OF CODE PROBABLY LOOKS VERY SIMILAR TO THE toggleTodoStatus
 	}
 
 
-
-}
