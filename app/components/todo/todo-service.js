@@ -19,6 +19,7 @@ export default class TodoService {
 		todoApi.get('')
 			.then((res) => {
 				console.log(res)
+				todoList = res.data.data
 				draw(res.data.data)
 			})
 			.catch(logError)
@@ -33,10 +34,13 @@ export default class TodoService {
 			.catch(logError)
 	}
 
-	toggleTodoStatus(todoId) {
-		
+	toggleTodoStatus(todoId, getTodos) {
+		let targetTodo = todoList.find(todo => {
+			return todo._id == todoId
+		})
+		targetTodo.completed = !targetTodo.completed
 		//STEP 2: Change the completed flag to the opposite of what is is **HINT** todo.completed = !todo.completed
-		todoApi.put(todo._Id, todoId)
+		todoApi.put(todoId, targetTodo)
 			.then(res => {
 			getTodos()	//DO YOU WANT TO DO ANYTHING WITH THIS?
 			})

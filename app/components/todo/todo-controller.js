@@ -10,28 +10,27 @@ function getTodos() {
 	todoService.getTodos(draw)
 }
 
-let todocount=0
 
 function draw(todos) {
 	//WHAT IS MY PURPOSE?
 	//BUILD YOUR TODO TEMPLATE HERE
 	console.log(todos)
 	
-	var template = ''
+	var template = `Number Of To Dos ${todos.length}`
 	todos.forEach(todo => {
 		template += `
 		<div class="col-4 card ">
-		<h5 class="{$todo.completed ? "strike-out" : ''}">
-		<input type="checkbox" ${todo.completed} ? "checked": ''} id="${todo._id}" onclick="app.controllers.todoController.toggleTodoStatus('${todo._id}')">
+		<h5 class="${todo.completed ? "strike-out" : ''}">
+		<input type="checkbox" ${todo.completed ? "checked": ''} id="${todo._id}" onchange="app.controllers.todoController.toggleTodoStatus('${todo._id}')">
 		${todo.description}</h5>
 		<button onclick="app.controllers.todoController.removeTodo('${todo._id}')" type="delete">Delete</button> 
 		</div>
 
 		`
-		todocount++
+	
 	})
 document.getElementById("todo").innerHTML = template
-document.getElementById("todocount").innerText = JSON.stringify(todocount)
+
 }
 
 
@@ -65,12 +64,13 @@ export default class TodoController {
 
 	toggleTodoStatus(todoId) {
 		// asks the service to edit the todo status
-		let editedTodo = {
-			completed: document.getElementById(todoId).checked,
-			_id: todoId
-		}
+		console.log(todoId)
+		// let editedTodo = {
+		// 	completed: document.getElementById(todoId).checked,
+		// 	_id: todoId
+		// }
 
-		todoService.toggleTodoStatus(editedTodo, getTodos)
+		todoService.toggleTodoStatus(todoId, getTodos)
 		// YEP THATS IT FOR ME
 	}
 
